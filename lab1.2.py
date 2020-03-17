@@ -25,14 +25,6 @@ def autocorrelation_function(x, mx, N):
     return np.sum(R)/(N-1)
 
 
-def cross_correlation_function(x, y, N):
-    R = np.zeros(int(N/2) - 1)
-    for T in range(int(N/2) - 1):
-        for t in range(int(N/2) - 1):
-            R[T] = ((x[t] - expectation(x, N)) * (y[t + T] - expectation(y, N)))
-    return np.sum(R)/(N-1)
-
-
 n = 10
 w = 1500
 N = 256
@@ -72,8 +64,16 @@ plt.plot(Rxy, 'r')
 plt.grid(True)
 plt.show()
 
+
+def cross_correlation_function(x, y, N):
+    R = np.zeros(int(N/2) - 1)
+    for T in range(int(N/2) - 1):
+        for t in range(int(N/2) - 1):
+            R[T] = ((x[t] - expectation(x, N)) * (y[t + T] - expectation(y, N)))
+    return np.sum(R)/(N-1)
+
 start = time.perf_counter()
-cov = Rxy(harmonics, y, N)
+cov = cross_correlation_function(harmonics, y, N)
 
 time_rxy = time.perf_counter() - start
 
@@ -84,11 +84,6 @@ plt.show()
 
 plt.figure(figsize=(30, 20))
 plt.plot(y)
-plt.grid(True)
-plt.show()
-
-plt.figure(figsize=(10, 5))
-plt.plot(Rxy, 'r')
 plt.grid(True)
 plt.show()
 
